@@ -198,9 +198,11 @@ iframe {
 </header>
 
 <!-- دکمه موزیک -->
-<button id="playMusic" class="glass-btn" style="margin-top: 9%; color: rgba(14, 21, 106, 0.8);">
-    <i class="fas fa-music"></i>
-</button>
+<button id="playMusic"  class="glass-btn" style="margin-top: 11%; color: rgba(14, 21, 106, 0.8);"><i class="fas fa-music"></i></button>
+
+<audio id="myAudio" preload="auto">
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
 
 <audio id="myAudio">
     <source src="music.mp3" type="audio/mpeg">
@@ -235,11 +237,21 @@ closeBtn.onclick = () => popup.style.display = "none";
 
 window.onclick = (e) => { if(e.target == popup) popup.style.display = "none"; }
 
-const playBtn = document.getElementById("playMusic");
-const myAudio = document.getElementById("myAudio");
-playBtn.onclick = () => myAudio.play();
+const btn = document.getElementById("playMusic");
+const audio = document.getElementById("myAudio");
+
+btn.onclick = () => {
+    if (audio.paused) {
+        audio.play();
+        btn.textContent = "توقف ";
+    } else {
+        audio.pause();
+        btn.textContent = "پخش ";  }
+};
+
 </script>
-<p style="font-weight: bold ;  ; color: rgba(2, 2, 139,0.5);" >
+
+<p style="font-weight: bold ;  ; color: rgba(2, 2, 139,0.5); margin-bottom:5 ;" >
      آدرس :
  شعبه مرکزی ،
 شعبه ابن سینا ،
