@@ -132,9 +132,48 @@ iframe {
 
 /* ریسپانسیو */
 @media (max-width: 768px) {
-    .logo { width: 55%; margin-top: 20%; }
+    .logo { width: 55%; margin-top: 1%; }
     
     .address img { width: 90%; }
+}
+.glass-player{
+  width:50px;        /* اندازه دقیق‌تر مثل عکس */
+  height:40px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:0 14px;
+  border-radius:25px;
+
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  box-shadow: 0 8px 25px rgba(0,0,0,0.28);
+}
+
+.glass-player button{
+  background:none;
+  border:none;
+  color:#fff;
+  font-size:16px;
+  cursor:pointer;
+  padding:0;
+}
+
+.progress{
+  flex:1;
+  height:3px;          /* باریک‌تر مثل عکس */
+  background: rgba(255,255,255,0.35);
+  border-radius:10px;
+  overflow:hidden;
+  cursor:pointer;
+}
+
+.progress-fill{
+  height:100%;
+  width:0%;
+  background:#fff;
 }
 </style>
 </head>
@@ -145,6 +184,16 @@ iframe {
 
 <button id="openPopup" class="glass-btn">فال حافظ</button>
 
+<!-- موزیک -->
+<div class="glass-player" style="margin-top:3% ;">
+  <button id="playBtn">▶</button>
+
+  <div class="progress">
+    <div class="progress-fill"></div>
+  </div>
+
+  <audio id="audio" src="music.mp3"></audio>
+</div>
 <!-- کارت تماس -->
 <div class="contact-wrapper">
 
@@ -178,18 +227,31 @@ iframe {
 </div>
 <audio id="bgMusic" src="music.mp3" autoplay muted></audio>
 <script>
-const popup = document.getElementById("popup");
-document.getElementById("openPopup").onclick = () => popup.style.display = "block";
-document.querySelector(".close").onclick = () => popup.style.display = "none";
-window.onclick = e => { if(e.target === popup) popup.style.display = "none"; }
- window.addEventListener('load', () => {
-    const music = document.getElementById('bgMusic');
-    // بعد از اجرا، حدود نیم‌ثانیه بعد صدا باز میشه (مرورگر چون autoplay مجازه، فقط mute رو قبول میکنه)
-    setTimeout(() => {
-      music.muted = false;
-      music.volume = 1.0;
-    }, 500);
-  });
+const audio = document.getElementById("audio");
+const playBtn = document.getElementById("playBtn");
+const progress = document.querySelector(".progress");
+const fill = document.querySelector(".progress-fill");
+
+playBtn.onclick = () => {
+  if(audio.paused){
+    audio.play();
+    playBtn.textContent = "⏸";
+  } else {
+    audio.pause();
+    playBtn.textContent = "▶";
+  }
+};
+
+audio.ontimeupdate = () => {
+  const percent = (audio.currentTime / audio.duration) * 100;
+  fill.style.width = percent + "%";
+};
+
+progress.onclick = (e) => {
+  const rect = progress.getBoundingClientRect();
+  const clickX = e.clientX - rect.left;
+  audio.currentTime = (clickX / rect.width) * audio.duration;
+};
 </script>
 
 </body>
