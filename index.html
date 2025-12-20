@@ -175,6 +175,10 @@ iframe {
   width:0%;
   background:#fff;
 }
+.glass-player i{
+  color: white;
+  font-size: 16px;
+}
 </style>
 </head>
 
@@ -186,8 +190,9 @@ iframe {
 
 <!-- موزیک -->
 <div class="glass-player" style="margin-top:3% ;">
-  <button id="playBtn">▶</button>
-
+ <button id="playBtn">
+  <i class="fa-solid fa-play"></i>
+</button>
   <div class="progress">
     <div class="progress-fill"></div>
   </div>
@@ -246,12 +251,16 @@ const progress = document.querySelector(".progress");
 const fill = document.querySelector(".progress-fill");
 
 playBtn.onclick = () => {
+  const icon = playBtn.querySelector("i");
+
   if(audio.paused){
     audio.play();
-    playBtn.textContent = "⏸";
+    icon.classList.remove("fa-play");
+    icon.classList.add("fa-pause");
   } else {
     audio.pause();
-    playBtn.textContent = "▶";
+    icon.classList.remove("fa-pause");
+    icon.classList.add("fa-play");
   }
 };
 
